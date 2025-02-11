@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Devnet } from './components/Devnet';
 import { init } from './fhevmjs';
 import './App.css';
 import { Connect } from './components/Connect';
+import GameBoard from './components/Game/GameBoard';
 
 function App() {
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    // Trick to avoid double init with HMR
     if (window.fhevmjsInitialized) return;
     window.fhevmjsInitialized = true;
     init()
@@ -25,10 +24,12 @@ function App() {
 
   return (
     <>
-      <h1>fhevmjs</h1>
+      <h1>FHEVM Minesweeper</h1>
       <Connect>
         {(account, provider) => (
-          <Devnet account={account} provider={provider} />
+          <>
+            <GameBoard account={account} provider={provider} />
+          </>
         )}
       </Connect>
       <p className="read-the-docs">

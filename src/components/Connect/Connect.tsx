@@ -79,41 +79,12 @@ export const Connect: React.FC<{
     if (accounts.length > 0) {
       setAccount(accounts[0]);
       setConnected(true);
-      if (!(await hasValidNetwork())) {
-        await switchNetwork();
-      }
     }
   };
-
-  const switchNetwork = useCallback(async () => {
-    try {
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: AUTHORIZED_CHAIN_ID[0] }],
-      });
-    } catch (e) {
-      console.error('No Sepolia chain configured');
-    }
-  }, []);
 
   const child = useMemo<React.ReactNode>(() => {
     if (!account || !provider) {
       return null;
-    }
-
-    if (!validNetwork) {
-      return (
-        <div>
-          <p>You're not on the correct network</p>
-          <p>
-            <button onClick={switchNetwork}>Switch to Sepolia</button>
-          </p>
-        </div>
-      );
-    }
-
-    if (loading) {
-      return <p>Loading...</p>;
     }
 
     return children(account, provider);
